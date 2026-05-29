@@ -182,7 +182,9 @@ class BleScanViewModel extends ChangeNotifier {
               final previous = _devices[result.device.remoteId];
               final scanIntervalMs =
                   previous == null ? 0 : now - previous.lastScanMs;
-              _devices[result.device.remoteId] = parsed.copyWith(
+              _devices[result.device.remoteId] = BleDeviceInfo.mergeScanUpdate(
+                previous: previous,
+                parsed: parsed,
                 lastScanMs: now,
                 scanIntervalMs: scanIntervalMs,
               );

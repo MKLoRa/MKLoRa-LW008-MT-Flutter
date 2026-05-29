@@ -70,7 +70,7 @@ class DeviceItem extends StatelessWidget {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            'MAC:${device.advMacAddress.isNotEmpty ? device.advMacAddress : 'N/A'}',
+                            'MAC:${device.macAddress.isNotEmpty ? device.macAddress : 'N/A'}',
                             style: const TextStyle(
                               fontSize: 14,
                               color: Color(0xFF666666),
