@@ -1,0 +1,187 @@
+class Lw008OptionLists {
+  Lw008OptionLists._();
+
+  static const posStrategy3 = ['WIFI', 'BLE', 'GPS'];
+  static const posStrategy4 = ['WIFI', 'BLE', 'GPS', 'WIFI+GPS'];
+  static const posStrategy5 = ['WIFI', 'BLE', 'GPS', 'WIFI+GPS', 'BLE+GPS'];
+  static const posStrategy7 = [
+    'WIFI',
+    'BLE',
+    'GPS',
+    'WIFI+GPS',
+    'BLE+GPS',
+    'WIFI+BLE',
+    'WIFI+BLE+GPS',
+  ];
+  static const posStrategy8 = [...posStrategy7, 'BLE&GPS'];
+
+  static const loraUploadMode = ['ABP', 'OTAA'];
+  static const loraRegions = [
+    'AS923',
+    'AU915',
+    'EU868',
+    'KR920',
+    'IN865',
+    'US915',
+    'RU864',
+    'AS923-1',
+    'AS923-2',
+    'AS923-3',
+    'AS923-4',
+  ];
+
+  static const deviceModes = [
+    'Standby Mode',
+    'Timing Mode',
+    'Periodic Mode',
+    'Motion Mode',
+  ];
+
+  static const buzzerSounds = ['No', 'Alarm', 'Normal'];
+  static const vibrationIntensities = ['No', 'Low', 'Medium', 'High'];
+  static const lowPowerPercents = ['10%', '20%', '30%', '40%', '50%', '60%'];
+  static const wifiDataTypes = ['DAS', 'Customer'];
+  static const gpsDataTypes = ['DAS', 'Customer'];
+  static const gpsPosSystems = ['GPS', 'Beidou', 'GPS&Beidou'];
+  static const gpsModuleTypes = ['Traditional GPS module', 'Lora Cloud'];
+
+  static const alarmTypes = ['NO', 'Alert', 'SOS'];
+  static const payloadTypes = ['Unconfirmed', 'Confirmed'];
+  static const retransmissionTimes = ['0', '1', '2', '3'];
+
+  /// Voltage threshold picker options: 2.2V ~ 3.2V (device values 44~64).
+  static List<String> voltageThresholdOptions() {
+    final options = <String>[];
+    for (var i = 44; i <= 64; i++) {
+      final value = i * 0.05;
+      options.add(_formatVoltageThreshold(value));
+    }
+    return options;
+  }
+
+  static String _formatVoltageThreshold(double value) {
+    final text = value.toStringAsFixed(2);
+    if (text.endsWith('0')) {
+      return value.toStringAsFixed(1);
+    }
+    return text;
+  }
+
+  static int voltageThresholdDeviceValue(int pickerIndex) => pickerIndex + 44;
+
+  static int voltageThresholdPickerIndex(int deviceValue) =>
+      (deviceValue - 44).clamp(0, voltageThresholdOptions().length - 1);
+
+  static bool isFirmwareAtLeast(String firmware, String minimum) {
+    int parsePart(String version, int index) {
+      var text = version.trim();
+      if (text.startsWith('V') || text.startsWith('v')) {
+        text = text.substring(1);
+      }
+      final parts = text.split('.');
+      if (index >= parts.length) return 0;
+      return int.tryParse(parts[index]) ?? 0;
+    }
+
+    for (var i = 0; i < 3; i++) {
+      final left = parsePart(firmware, i);
+      final right = parsePart(minimum, i);
+      if (left != right) {
+        return left > right;
+      }
+    }
+    return true;
+  }
+
+  static const bleFixMechanism = ['Time Priority', 'RSSI Priority'];
+  static const bleScanPhyTypes = [
+    '1M PHY(BLE 4.x)',
+    '1M PHY(BLE 5)',
+    '1M PHY(BLE 4.x + BLE 5)',
+    'Coded PHY(BLE 5)',
+  ];
+  static const wifiFixMechanism = ['RSSI Priority', 'Time Priority'];
+  static const filterRelationship = [
+    'Null',
+    'Only MAC',
+    'Only ADV Name',
+    'Only Raw Data',
+    'ADV Name&Raw Data',
+    'MAC&ADV Name&Raw Data',
+    'ADV Name | Raw Data',
+  ];
+
+  static const alertTriggerModes = [
+    'Single Click',
+    'Double Click',
+    'Long Press 1s',
+    'Long Press 2s',
+    'Long Press 3s',
+  ];
+
+  static const sosTriggerModes = [
+    'Double Click',
+    'Triple Click',
+    'Long Press 1s',
+    'Long Press 2s',
+    'Long Press 3s',
+  ];
+
+  static const txPowerRangeHint =
+      '(-40,-20,-16,-12,-8,-4,0,+2,+3,+4,+5,+6,+7,+8)';
+  static const txPowerLevels = [-40, -20, -16, -12, -8, -4, 0, 2, 3, 4, 5, 6, 7, 8];
+
+  static List<String> timeZones() {
+    final zones = <String>[];
+    for (var i = -24; i <= 28; i++) {
+      if (i < 0) {
+        if (i % 2 == 0) {
+          zones.add('UTC${i ~/ 2}');
+        } else {
+          zones.add(i < -1 ? 'UTC${(i + 1) ~/ 2}:30' : 'UTC-0:30');
+        }
+      } else if (i == 0) {
+        zones.add('UTC');
+      } else if (i % 2 == 0) {
+        zones.add('UTC+${i ~/ 2}');
+      } else {
+        zones.add('UTC+${(i - 1) ~/ 2}:30');
+      }
+    }
+    return zones;
+  }
+
+  static int regionPickerToDevice(int index) {
+    return index > 1 ? index + 3 : index;
+  }
+
+  static int regionDeviceToPicker(int value) {
+    return value > 2 ? value - 3 : value;
+  }
+
+  static int vibrationDeviceValue(int pickerIndex) {
+    switch (pickerIndex) {
+      case 1:
+        return 10;
+      case 2:
+        return 50;
+      case 3:
+        return 80;
+      default:
+        return 0;
+    }
+  }
+
+  static int vibrationPickerIndex(int deviceValue) {
+    switch (deviceValue) {
+      case 10:
+        return 1;
+      case 50:
+        return 2;
+      case 80:
+        return 3;
+      default:
+        return 0;
+    }
+  }
+}
