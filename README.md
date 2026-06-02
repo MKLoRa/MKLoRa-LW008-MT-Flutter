@@ -2,7 +2,7 @@
 
 Flutter client for **LW008-MT** devices. Supports BLE scanning, connection, protocol parameter read/write, device-initiated disconnect notifications, LoRa configuration, positioning (BLE / WiFi / GPS), motion modes, auxiliary detection, beacon filter rules, local storage data sync, log export, and Nordic DFU firmware updates on Android and iOS physical devices.
 
-Native Android reference: [`LW008_Android`]
+Native Android reference: `LW008_Android`
 
 ---
 
